@@ -37,15 +37,22 @@ class BencodeDecoderTest {
     }
 
     @Test
-    void parseByteString_expectValidString() {
+    void parseStr_expectValidString() {
         bencodeDecoder.setInput("5:abcde");
         assertEquals("abcde", bencodeDecoder.parseStr());
     }
 
     @Test
-    void parseByteString_expectEmptyString() {
+    void parseStr_expectEmptyString() {
         bencodeDecoder.setInput("0:");
         assertEquals("", bencodeDecoder.parseStr());
+    }
+
+    @Test
+    void parseStr_expectStringContainingSpecialChars() {
+        String result = "abcde 123!@#-=0 \u0123 \u0000 áéä";
+        bencodeDecoder.setInput("23:abcde 123!@#-=0 \u0123 \u0000 áéä");
+        assertEquals(result, bencodeDecoder.parseStr());
     }
 
     @Test
@@ -85,14 +92,14 @@ class BencodeDecoderTest {
     }
 
     @Test
-    void parseDictionary_expectEmptyDictionary() {
+    void parseDict_expectEmptyDictionary() {
         Map<String, Object> result = new HashMap<String, Object>();
         bencodeDecoder.setInput("de");
         assertEquals(result, bencodeDecoder.parseDict());
     }
 
     @Test
-    void parseDictionary_expectString() {
+    void parseDict_expectString() {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("abcde", "fghij");
         bencodeDecoder.setInput("d5:abcde5:fghije");
@@ -100,7 +107,7 @@ class BencodeDecoderTest {
     }
 
     @Test
-    void parseDictionary_expectStringAndInt() {
+    void parseDict_expectStringAndInt() {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("abcde", "fghij");
         result.put("answer_to_universe", 42);

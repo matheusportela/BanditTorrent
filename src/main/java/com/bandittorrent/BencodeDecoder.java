@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class BencodeDecoder {
     private static final Logger logger = Logger.getLogger(BencodeDecoder.class.getName());
     private static final Pattern INT_PATTERN = Pattern.compile("i(-?\\d+)e");
-    private static final Pattern STR_PATTERN = Pattern.compile("\\d+:(\\w+)");
+    private static final Pattern STR_PATTERN = Pattern.compile("\\d+:(.*)");
     private int position;
     private String input = null;
 
